@@ -979,7 +979,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 
 static void RelayTransaction(const CTransaction& tx, CConnman* connman)
 {
-    if (GetArg("-walletbroadcast", "") == 0)
+    if (!fBroadcastTransactions)
         return;
     
     CInv inv(MSG_TX, tx.GetHash());
