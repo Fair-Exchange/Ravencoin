@@ -979,6 +979,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 
 static void RelayTransaction(const CTransaction& tx, CConnman* connman)
 {
+gArgs.GetArg("-blockreconstructionextratxn", DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN);    gArgs.GetArg("-walletbroadcast", DEFAULT_WALLETBROADCAST);
     if (!fBroadcastTransactions)
         return;
     
