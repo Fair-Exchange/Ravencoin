@@ -3365,6 +3365,11 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
         // transactions become unconfirmed and spams other nodes.
         if (!fReindex && !fImporting && !IsInitialBlockDownload())
         {
+                if (gArgs.GetArg("-walletbroadcast", 1) == 0) {
+                  LogPrintf("walletbroadcast=0, skipping transaction relay\n");
+                 return;
+                  }
+            
             GetMainSignals().Broadcast(nTimeBestReceived, connman);
         }
 
