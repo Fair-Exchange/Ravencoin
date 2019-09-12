@@ -979,7 +979,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 
 static void RelayTransaction(const CTransaction& tx, CConnman* connman)
 {
-    if (gArgs.GetArg("-walletbroadcast", 1) == 0)
+    if (gArgs.GetArg("-walletbroadcast", 1) == 0 && !(pfrom->fWhitelisted && (gArgs.GetBoolArg("-whitelistrelay", DEFAULT_WHITELISTRELAY) || (gArgs.GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY))))
         {
         return;
         }
@@ -3365,10 +3365,10 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
         // transactions become unconfirmed and spams other nodes.
         if (!fReindex && !fImporting && !IsInitialBlockDownload())
         {
-                if (gArgs.GetArg("-walletbroadcast", 1) == 0) {
-                  LogPrintf("walletbroadcast=0, skipping transaction relay\n");
-                 return;
-                  }
+    if (gArgs.GetArg("-walletbroadcast", 1) == 0 && !(pfrom->fWhitelisted && (gArgs.GetBoolArg("-whitelistrelay", DEFAULT_WHITELISTRELAY) || (gArgs.GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY))))
+        {
+        return;
+        }
             
             GetMainSignals().Broadcast(nTimeBestReceived, connman);
         }
