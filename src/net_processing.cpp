@@ -3363,7 +3363,7 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
         // Resend wallet transactions that haven't gotten in a block yet
         // Except during reindex, importing and IBD, when old wallet
         // transactions become unconfirmed and spams other nodes.
-        if (!fReindex && !fImporting && !IsInitialBlockDownload() && gArgs.GetArg("-walletbroadcast", 1) != 0)
+        if (!fReindex && !fImporting && !IsInitialBlockDownload() && !(gArgs.GetArg("-walletbroadcast", 1) == 0))
         {            
             GetMainSignals().Broadcast(nTimeBestReceived, connman);
         }
